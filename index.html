@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WA Dynamic Linking</title>
+</head>
+<body>
+    <label style="display: block; font: 1em sans-serif; margin: 8px 0;">Enter Number</label>
+    <input type="text" onchange="printOutput(this.value)" style="border: 2px black solid; height: 30px; width: 20%; padding: 12px 20px; margin: 8px 0; border-radius: 4px; box-sizing: border-box;">
+    
+    <label style="display: block; font: 1em sans-serif; margin: 8px 0;">Result</label>
+    <div id="output" style="border-radius: 5px; padding: 20px; border: 2px black solid; width: 20%; margin: 8px 0;"> 0 </div>
+    
+    <script type="text/javascript">
+        var ready = false;
+        var Module = {
+            onRuntimeInitialized: () => {
+                console.log('WA ready');
+                ready = true;
+            }
+        }
+
+        function printOutput(value) {
+            var output = document.getElementById('output');
+            if(ready === true) {
+                output.innerHTML = `<h1>${Module.test_dynamic(parseInt(value))}${value < 0 ? 'i': ''}<h1>`;
+                return;
+            }
+            
+            var myInterval = setInterval(() => {
+                if(ready === true) {
+                    output.innerHTML = '0';
+                    output.innerHTML = `<h1>${Module.test_dynamic(parseInt(value))}${value < 0 ? 'i': ''}<h1>`;
+                    clearInterval(myInterval);
+                }
+            },300)
+            
+        }
+
+    </script>
+    <script async src="./a.out.js" type="text/javascript"></script>
+</body>
+</html>
